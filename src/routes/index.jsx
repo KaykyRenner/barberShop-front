@@ -1,11 +1,12 @@
 //import Erro from "../pages/erro";
 //import NavBar from "../shared/components/navBar";
+import { Button } from "@mui/material";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 const AppRouter = createBrowserRouter([
   {
     path: "/pagina-inicial",
-    element: <p>teste</p>,
+    element: <Button variant="contained" color="primary">aa</Button>
   },
   {
     path: "*",
