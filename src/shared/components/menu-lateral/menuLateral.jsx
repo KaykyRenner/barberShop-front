@@ -8,14 +8,18 @@ import {
     ListItemIcon,
     ListItemText,
     Icon,
+    useMediaQuery,
 } from "@mui/material";
 import { Box, } from "@mui/system";
+import { useDrawer } from "../../contexts/drowerContext";
 
 const MenuLatereal = ({ children }) => {
   const them = useTheme();
+  const metches = useMediaQuery(them.breakpoints.down("sm"))
+  const {isDrawerClosed,toggleDrawer } = useDrawer()
   return (
     <>
-      <Drawer variant="permanent">
+      <Drawer open={isDrawerClosed} onClose={toggleDrawer} variant={metches?"temporary" : "permanent"}>
         <Box
           width={them.spacing(28)}
           height="100%"
@@ -48,7 +52,7 @@ const MenuLatereal = ({ children }) => {
           </Box>
         </Box>
       </Drawer>
-      <Box height="100vh" marginLeft={them.spacing(28)}>
+      <Box height="100vh" marginLeft={metches? 0: them.spacing(28)}>
         {children}
       </Box>
     </>
