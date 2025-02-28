@@ -6,11 +6,10 @@ const ThemeContext = createContext()
 const AppThemeProvider = ({children})=>{
     const [themeName,setTheme] = useState('light')
     const toggleTheme =useCallback(()=>{
-        setTheme((theme) => theme === 'light'?'dark':'light');
+        setTheme((theme) => theme ==='light'?'dark':'light');
     },[]);
     const theme = useMemo(()=>{
         if(themeName === 'light') return lightTheme
-
         return darkTheme
     },[themeName])
     return (
