@@ -14,7 +14,7 @@ import { Box } from "@mui/system";
 import { useDrawer } from "../../contexts/drowerContext";
 import PropTypes from "prop-types";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"; // Aqui permanece, pois o useNavigate é necessário para navegação.
-
+import { useTheme as mudarTema } from "../../contexts/themeContext";
 const ListItemLink = ({ to, icon, label, onClick }) => {
   const navigate = useNavigate();
   const resolvedPath = useResolvedPath(to);
@@ -44,7 +44,7 @@ const MenuLatereal = ({ children }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm")); // Responsividade para ajustar o layout em telas pequenas
   const { isDrawerClosed, toggleDrawer } = useDrawer(); // Contexto do Drawer para controlar seu estado de abertura/fechamento
-
+  const { themeName, toggleTheme } = mudarTema();
   return (
     <>
       <Drawer
@@ -72,10 +72,23 @@ const MenuLatereal = ({ children }) => {
             />
           </Box>
           <Divider />
-          <Box flex={1}>
+          <Box display="flex" flexDirection="column" height="100vh">
+            <Box flex={1}>
+              <List component="nav">
+                {/* Adicionando o ListItemLink para navegação */}
+                <ListItemLink
+                  icon="home"
+                  label="Página Inicial"
+                  to="/pagina-inicial"
+                  onClick={toggleDrawer}
+                />
+              </List>
+            </Box>
             <List component="nav">
-              {/* Adicionando o ListItemLink para navegação */}
-              <ListItemLink icon="home" label="Página Inicial" to="/pagina-inicial" onClick={toggleDrawer}
+              <ListItemLink
+                icon={themeName === "light" ? "light_mode" : "dark_mode"}
+                label="alternar Tema"
+                onClick={toggleTheme}
               />
             </List>
           </Box>
