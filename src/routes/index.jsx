@@ -1,17 +1,20 @@
-//import Erro from "../pages/erro";
-//import NavBar from "../shared/components/navBar";
-
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import PageInicial from "../pages/pageInical";
+import DashBord from "../pages/dashBord/dashBord";
+import { MenuLatereal } from "../shared/components/menu-lateral/menuLateral";
+
 const AppRouter = createBrowserRouter([
   {
     path: "/pagina-inicial",
-    element:<PageInicial/>
+    element: (
+      <MenuLatereal>
+        <DashBord />
+      </MenuLatereal>
+    ),
   },
   {
     path: "*",
-    element: <Navigate to="/pagina-inicial" />
-  }
+    element: <Navigate to="/pagina-inicial" />,
+  },
 ]);
 
 export default AppRouter;
