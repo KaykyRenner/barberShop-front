@@ -28,7 +28,7 @@ const ListItemLink = ({ to, icon, label, onClick }) => {
       <ListItemIcon>
         <Icon>{icon}</Icon>
       </ListItemIcon>
-      <ListItemText primary={label} />
+      <ListItemText primary={label}/>
     </ListItemButton>
   );
 };
