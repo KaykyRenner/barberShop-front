@@ -52,7 +52,7 @@ const FerramentasDeDetalhes = ({
           variant="contained"
           color="primary"
           disableElevation
-          startIcon={<Icon>save</Icon>}
+          startIcon={<Icon >save</Icon>}
         >
           <Typography
             variant="button"

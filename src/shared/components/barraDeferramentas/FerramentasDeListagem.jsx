@@ -1,5 +1,6 @@
 import { Box, TextField, Button, Paper, useTheme, Icon } from "@mui/material";
 import PropTypes from "prop-types";
+import enviroment from "../../environment";
 
 const FerramentasDeListagem = ({
   textoDeBusca = "",
@@ -28,7 +29,7 @@ const FerramentasDeListagem = ({
             value={textoDeBusca}
             onChange={(e) => e && aoMudarTextoDeBusca(e.target.value)}
             size="small"
-            placeholder="pesquisar"
+            placeholder={enviroment.INPUT_DE_BUSCA}
           />
         )}
       </Box>
