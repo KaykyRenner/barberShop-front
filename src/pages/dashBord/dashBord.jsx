@@ -6,7 +6,11 @@ function DashBord() {
   return (
     <LayoutBaseDePagina
       titulo="pagina inicial"
-      barraDeFerramentas={<FerramentasDeDetalhes  mostrarBotaoSalvarEFechar mostrarBotaoSalvarEFecharCarregando/>}
+      barraDeFerramentas={
+        <FerramentasDeDetalhes         
+          mostrarBotaoSalvarEFechar
+        />
+      }
     >
       testando
     </LayoutBaseDePagina>
