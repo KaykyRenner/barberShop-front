@@ -1,7 +1,7 @@
 import axios from "axios";
 import sucessInterceptors from "./interceptors/sucessInterceptors"
 import erroInterceptors from "./interceptors/erroInterceptors";
-import enviroment from "../../environment";
+import enviroment from "../../../environment";
 const api = axios.create({
     baseURL: enviroment.URL_BASE
 })
