@@ -25,6 +25,7 @@ const getAll = async (page = 1, filter = "") => {
     const response = await api.get(url);
 
     // Verificando a resposta
+    
     if (response && response.data) {
       return {
         data: response.data, // Agora 'data' estará no lugar de 'barbeiros'
