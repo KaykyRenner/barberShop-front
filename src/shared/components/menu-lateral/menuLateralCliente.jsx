@@ -10,6 +10,7 @@ import {
   Icon,
   useMediaQuery,
 } from "@mui/material";
+import {ContentCut} from '@mui/icons-material';
 import { Box } from "@mui/system";
 import { useDrawer } from "../../contexts/drowerContext";
 import PropTypes from "prop-types";
@@ -40,7 +41,7 @@ ListItemLink.propTypes = {
   onClick: PropTypes.func,
 };
 
-const MenuLatereal = ({ children }) => {
+const MenuLaterealCliente = ({ children }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm")); // Responsividade para ajustar o layout em telas pequenas
   const { isDrawerClosed, toggleDrawer } = useDrawer(); // Contexto do Drawer para controlar seu estado de abertura/fechamento
@@ -82,7 +83,15 @@ const MenuLatereal = ({ children }) => {
                   to="/pagina-inicial"
                   onClick={toggleDrawer}
                 />
+                <ListItemLink
+                  icon= {<ContentCut/>}
+                  label="barbeiros"
+                  to="/barbeiros"
+                  onClick={toggleDrawer}
+                />
               </List>
+              
+              
             </Box>
             <List component="nav">
               <ListItemLink
@@ -102,4 +111,4 @@ const MenuLatereal = ({ children }) => {
   );
 };
 
-export { MenuLatereal };
+export { MenuLaterealCliente };

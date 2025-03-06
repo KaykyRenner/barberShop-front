@@ -7,7 +7,7 @@ const FerramentasDeListagem = ({
   mostrarInputBusca = false,
   aoMudarTextoDeBusca,
   tesxtoBotaoNovo = "novo",
-  mostrarBotaoNovo = true,
+  mostrarBotaoNovo = false,
   aoClicarEmNovo,
 }) => {
   const theme = useTheme();

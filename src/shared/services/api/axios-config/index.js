@@ -1,16 +1,26 @@
 import axios from "axios";
-import sucessInterceptors from "./interceptors/sucessInterceptors"
+import sucessInterceptors from "./interceptors/sucessInterceptors";
 import erroInterceptors from "./interceptors/erroInterceptors";
 import enviroment from "../../../environment";
+
+// Criação da instância do axios
 const api = axios.create({
     baseURL: enviroment.URL_BASE
-})
+});
+
+// Configuração dos interceptadores de resposta
 api.interceptors.response.use(
-    (response) =>{
-            sucessInterceptors(response)
+    // Interceptador de sucesso
+    (response) => {
+        sucessInterceptors(response);
+        return response;  
     },
-    (error)=>{
-        erroInterceptors(error)
+    // Interceptador de erro
+    (error) => {
+        
+        erroInterceptors(error);
+        return Promise.reject(error);
     }
-)
-export default api
+);
+
+export default api;

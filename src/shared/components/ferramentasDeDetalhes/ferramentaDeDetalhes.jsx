@@ -83,7 +83,7 @@ const FerramentasDeDetalhes = ({
               overflow="hidden"
               textOverflow="ellipsis"
             >
-              SALVAR E VOLTAR
+              SALVAR E FECHAR
             </Typography>
           </Button>
         )}

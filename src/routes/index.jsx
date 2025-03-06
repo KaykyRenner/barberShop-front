@@ -1,14 +1,23 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import DashBord from "../pages/dashBord/dashBord";
-import { MenuLatereal } from "../shared/components/menu-lateral/menuLateral";
+import DashBordCliente from "../pages/dashBord/dashBordCliente";
+import {MenuLaterealCliente} from "../shared/components/menu-lateral/menuLateralCliente"; 
+import ListagemBarbeiros from "../pages/barbeiros/listagemDeBarbeiros";
 
 const AppRouter = createBrowserRouter([
   {
     path: "/pagina-inicial",
     element: (
-      <MenuLatereal>
-        <DashBord />
-      </MenuLatereal>
+      <MenuLaterealCliente>
+        <DashBordCliente />
+      </MenuLaterealCliente>
+    ),
+  },
+  {
+    path: "/barbeiros",
+    element: (
+      <MenuLaterealCliente>
+        <ListagemBarbeiros />
+      </MenuLaterealCliente>
     ),
   },
   {

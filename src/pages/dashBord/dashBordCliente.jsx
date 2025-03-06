@@ -2,19 +2,14 @@ import FerramentasDeListagem from "../../shared/components/barraDeferramentas/Fe
 import FerramentasDeDetalhes from "../../shared/components/ferramentasDeDetalhes/ferramentaDeDetalhes";
 import LayoutBaseDePagina from "../../shared/layouts/layoutBaseDePagina";
 
-function DashBord() {
+function DashBordCliente() {
   return (
     <LayoutBaseDePagina
       titulo="pagina inicial"
-      barraDeFerramentas={
-        <FerramentasDeDetalhes         
-          mostrarBotaoSalvarEFechar
-        />
-      }
+      barraDeFerramentas={<FerramentasDeDetalhes mostrarBotaoSalvarEFechar />}
     >
-      testando
     </LayoutBaseDePagina>
   );
 }
 
-export default DashBord;
+export default DashBordCliente;
