@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   LinearProgress,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -31,11 +32,14 @@ const ListagemBarbeiros = () => {
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
   }, [searchParams]);
+  const pagina = useMemo(() => {
+    return Number(searchParams.get("pagina")) || "1";
+  }, [searchParams]);
 
   useEffect(() => {
     debounce(() => {
       setLoading(true);
-      PessoaService.getAll(1, busca)
+      PessoaService.getAll(pagina, busca)
         .then((result) => {
           setLoading(false);
           if (result instanceof Error) {
@@ -52,14 +56,14 @@ const ListagemBarbeiros = () => {
           setError("Erro ao carregar os dados");
         });
     });
-  }, [busca, debounce]);
+  }, [busca, pagina]);
   return (
     <LayoutBaseDePagina titulo={"barbeiros"}>
       <FerramentasDeListagem
         mostrarInputBusca
         textoDeBusca={busca}
         aoMudarTextoDeBusca={(texto) => {
-          setSearchParams({ busca: texto }, { replace: true });
+          setSearchParams({ busca: texto, pagina:1 }, { replace: true });
         }}
       />
       <TableContainer
@@ -94,7 +98,17 @@ const ListagemBarbeiros = () => {
             )}
           </TableBody>
           <TableFooter>
-            
+            {(count>0 && count > enviroment.LIMITE_DE_LINHAS)&&(
+              <TableRow>
+                <TableCell colSpan={3}>
+                <Pagination
+                onChange={(e, newPage) => setSearchParams({busca, pagina:newPage.toString()},{replace:true})}
+                 page={pagina} 
+                count={Math.ceil(count/enviroment.LIMITE_DE_LINHAS)}/>
+                </TableCell>
+              </TableRow>
+            ) 
+            }
           </TableFooter>
         </Table>
       </TableContainer>
