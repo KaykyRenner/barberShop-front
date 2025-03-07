@@ -16,10 +16,11 @@ import {
 import { useSearchParams } from "react-router-dom";
 
 import FerramentasDeListagem from "../../shared/components/barraDeferramentas/FerramentasDeListagem";
-import { PessoaService } from "../../shared/services/api/barbeiro/barbeiro";
+import { barbeiroServices } from "../../shared/services/api/barbeiro/barbeiro";
 import LayoutBaseDePagina from "../../shared/layouts/layoutBaseDePagina";
 import useDebounce from "../../shared/hooks/useDeBounce";
 import enviroment from "../../shared/environment";
+import selecionaBarbeiro from "../../shared/services/api/agendarHorario/selecionaBarbeiro";
 
 const ListagemBarbeiros = () => {
   const { debounce } = useDebounce();
@@ -28,7 +29,10 @@ const ListagemBarbeiros = () => {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const handleSelectId= (id)=>{
+    console.log(id)
+    selecionaBarbeiro(id)
+  }
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
   }, [searchParams]);
@@ -39,7 +43,7 @@ const ListagemBarbeiros = () => {
   useEffect(() => {
     debounce(() => {
       setLoading(true);
-      PessoaService.getAll(pagina, busca)
+      barbeiroServices.getAll(pagina, busca)
         .then((result) => {
           setLoading(false);
           if (result instanceof Error) {
@@ -87,7 +91,7 @@ const ListagemBarbeiros = () => {
                   <TableCell>ações</TableCell>
                   <TableCell>{row.nomeBarbeiro}</TableCell>
                   <TableCell>
-                    <Button variant="contained">selecionar</Button>
+                    <Button onClick={()=>handleSelectId(row.id)} variant="contained">selecionar</Button>
                   </TableCell>
                 </TableRow>
               ))

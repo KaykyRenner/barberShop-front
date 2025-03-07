@@ -1,23 +1,6 @@
+import handleError from "../../../components/handleError/handleErro";
 import enviroment from "../../../environment";
 import api from "../axios-config/index";
-
-//id
-//nomeBarbeiro
-//emailBarbeiro
-//telefoneBarbeiro
-//user_id
-const handleError = (err, mensagemDeRota) => {
-  if (err.response) {
-    const erroBackEnd =
-      err.response.data?.message ||
-      `erro ${mensagemDeRota}. desconhecido do backEnd`;
-    console.log("erro ", erroBackEnd);
-    return new Error(erroBackEnd);
-  }
-  console.log("erro desconhecido", err);
-  return new Error(`erro ${mensagemDeRota}. desconhecido do backEnd`);
-};
-
 const getAll = async (page = 1, filter = "") => {
   try {
     const url = `/barbeiro?page=${page}&limit=${enviroment.LIMITE_DE_LINHAS}&filter=${filter}`;
@@ -96,10 +79,11 @@ const deleteById = async (id) => {
   }
 };
 
-export const PessoaService = {
+export const barbeiroServices = {
   getAll,
   getById,
   create,
   update,
   deleteById,
+  
 };
