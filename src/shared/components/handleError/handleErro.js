@@ -3,6 +3,7 @@ const handleError = (err, mensagemDeRota) => {
       const erroBackEnd =
         err.response.data?.message ||
         `erro ${mensagemDeRota}. desconhecido do backEnd`;
+        
       console.log("erro ", erroBackEnd);
       return new Error(erroBackEnd);
     }
