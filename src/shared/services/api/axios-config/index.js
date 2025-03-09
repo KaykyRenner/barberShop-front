@@ -5,7 +5,10 @@ import enviroment from "../../../environment";
 
 // Criação da instância do axios
 const api = axios.create({
-    baseURL: enviroment.URL_BASE
+    baseURL: enviroment.URL_BASE,
+    headers:{
+        authorization:`Bearer ${JSON.parse(localStorage.getItem('APP_ACESS_TOKEN')|| '')}`
+    }
 });
 
 // Configuração dos interceptadores de resposta

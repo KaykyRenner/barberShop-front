@@ -16,6 +16,7 @@ import { useDrawer } from "../../contexts/drowerContext";
 import PropTypes from "prop-types";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"; // Aqui permanece, pois o useNavigate é necessário para navegação.
 import { useTheme as mudarTema } from "../../contexts/themeContext";
+import { useAuthContext } from "../../contexts/authContext";
 const ListItemLink = ({ to, icon, label, onClick }) => {
   const navigate = useNavigate();
   const resolvedPath = useResolvedPath(to);
@@ -42,6 +43,7 @@ ListItemLink.propTypes = {
 };
 
 const MenuLaterealCliente = ({ children }) => {
+  const {logout} = useAuthContext()
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm")); // Responsividade para ajustar o layout em telas pequenas
   const { isDrawerClosed, toggleDrawer } = useDrawer(); // Contexto do Drawer para controlar seu estado de abertura/fechamento
@@ -94,6 +96,11 @@ const MenuLaterealCliente = ({ children }) => {
               
             </Box>
             <List component="nav">
+              <ListItemLink
+              icon={"logout"}
+              label="sair"
+              onClick={logout}
+              />
               <ListItemLink
                 icon={themeName === "light" ? "light_mode" : "dark_mode"}
                 label="alternar Tema"
