@@ -3,28 +3,36 @@ import DashBordCliente from "../pages/dashBord/dashBordCliente";
 import {MenuLaterealCliente} from "../shared/components/menu-lateral/menuLateralCliente"; 
 import ListagemBarbeiros from "../pages/barbeiros/listagemDeBarbeiros";
 import CreateUsuario from "../pages/cadastroELoginUsuarios/cadastro";
+import Login from "../shared/components/login/login";
+import PrivateRoute from "../shared/components/priveteRoute/priveteRoute";
 
 const AppRouter = createBrowserRouter([
   {
-    path: "/cadastro",
-    element: (
-        <CreateUsuario />
-    ),
+    path: "/criar",
+    element: <CreateUsuario />,
+  },
+  {
+    path: "/Login",
+    element: <Login />,
   },
   {
     path: "/pagina-inicial",
     element: (
-      <MenuLaterealCliente>
-        <DashBordCliente />
-      </MenuLaterealCliente>
+      <PrivateRoute>
+        <MenuLaterealCliente>
+          <DashBordCliente />
+        </MenuLaterealCliente>
+      </PrivateRoute>
     ),
   },
   {
     path: "/barbeiros",
     element: (
-      <MenuLaterealCliente>
-        <ListagemBarbeiros />
-      </MenuLaterealCliente>
+      <PrivateRoute>
+        <MenuLaterealCliente>
+          <ListagemBarbeiros />
+        </MenuLaterealCliente>
+      </PrivateRoute>
     ),
   },
   {
@@ -33,4 +41,4 @@ const AppRouter = createBrowserRouter([
   },
 ]);
 
-export default AppRouter;
+export {AppRouter};

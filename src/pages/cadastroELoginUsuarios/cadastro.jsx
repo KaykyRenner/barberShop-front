@@ -14,8 +14,11 @@ import {
 import { useState } from "react";
 import createCadastro from "../../shared/services/api/cadastroELoginUsuarios/cadastro";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../shared/contexts/authContext";
 
-const CreateUsuario = () => {
+const CreateUsuario = ({children}) => {
+ 
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [role, setRole] = useState("");

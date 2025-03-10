@@ -1,25 +1,21 @@
-import { StrictMode } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router-dom"; // Importando o RouterProvider
-import { AppThemeProvider } from "./shared/contexts/themeContext.jsx";
-import { DrawerProvider } from "./shared/contexts/drowerContext.jsx"; // Importando o DrawerProvider
-import AppRouter from "./routes/index.jsx";
-import { AuthProvider } from "./shared/contexts/authContext.jsx";
-import Login from "./shared/components/login/login.jsx";
-import CreateUsuario from "./pages/cadastroELoginUsuarios/cadastro.jsx";
+import { RouterProvider } from "react-router-dom";
+import { AppThemeProvider } from "./shared/contexts/themeContext";
+import { DrawerProvider } from "./shared/contexts/drowerContext";
+import { AuthProvider } from "./shared/contexts/authContext"; // Certifique-se de importar isso!
+import {AppRouter} from "./routes/index"
 
-createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <AppThemeProvider>
-
-      <Login>        
+const RootComponent = () => {
+  return (
+    <AuthProvider>  {/* 🔥 O AuthProvider precisa envolver toda a aplicação! */}
+      <AppThemeProvider>
         <DrawerProvider>
-          <StrictMode>
-            <RouterProvider router={AppRouter} />
-          </StrictMode>
+          <RouterProvider router={AppRouter} />
         </DrawerProvider>
-      </Login>
+      </AppThemeProvider>
+    </AuthProvider>
+  );
+};
 
-    </AppThemeProvider>
-  </AuthProvider>
-);
+createRoot(document.getElementById("root")).render(<RootComponent />);

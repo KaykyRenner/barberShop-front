@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, useMemo } from "react";
 import auth from "../services/api/auth/authServices";
 
 const AuthContext = createContext({
@@ -8,14 +8,14 @@ const AuthContext = createContext({
 });
 
 const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState(null);
 
     useEffect(() => {
         const acessTokenLocal = localStorage.getItem('APP_ACESS_TOKEN');
         if (acessTokenLocal) {
             setToken(JSON.parse(acessTokenLocal));
         } else {
-            setToken(undefined);
+            setToken(null);
         }
     }, []);
 
@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
     // Função de logout
     const handleLogout = useCallback(() => {
         localStorage.removeItem('APP_ACESS_TOKEN');
-        setToken(undefined);
+        setToken(null);
     }, []);
 
     const isAuthenticated = useMemo(() => !!token, [token]);
