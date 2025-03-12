@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, useMemo } from "react";
 import auth from "../services/api/auth/authServices";
+import { Navigate } from "react-router-dom";
 
 const AuthContext = createContext({
     isAuthenticated: false,
@@ -23,7 +24,7 @@ const AuthProvider = ({ children }) => {
     const handleLogin = useCallback(async (email, senha) => {
         const resultado = await auth(email, senha);
         if (resultado.erro) {
-            console.log(resultado.message);
+            console.log(resultado.erro);
         } else {
             // Salvando o token sem aspas adicionais
             localStorage.setItem('APP_ACESS_TOKEN', JSON.stringify(resultado.acessToken));

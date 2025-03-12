@@ -5,10 +5,11 @@ const auth = async (email, senha) => {
       senha,
       email,
     });
+    return data
   } catch (err) {
     if (err.response) {
       return {
-        erro: err.response.data?.message || `erro desconhecido do backEnd`,
+        erro: err.response.data.message || `erro desconhecido do backEnd`,
       };
     }
     console.log("erro desconhecido", err);

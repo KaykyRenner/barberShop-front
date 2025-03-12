@@ -1,38 +1,51 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import DashBordCliente from "../pages/dashBord/dashBordCliente";
-import {MenuLaterealCliente} from "../shared/components/menu-lateral/menuLateralCliente"; 
+import { MenuLaterealCliente } from "../shared/components/menu-lateral/menuLateralCliente";
 import ListagemBarbeiros from "../pages/barbeiros/listagemDeBarbeiros";
-import CreateUsuario from "../pages/cadastroELoginUsuarios/cadastro";
+import CreateUsuario from "../pages/cadastroUsuarios/cadastro";
+import { useAuthContext } from "../shared/contexts/authContext";
 import Login from "../shared/components/login/login";
-import PrivateRoute from "../shared/components/priveteRoute/priveteRoute";
+
+const PublicAuth = ({ element }) => {
+  const { isAuthenticated } = useAuthContext();
+  return isAuthenticated ? <Navigate to="/pagina-inicial" /> : element;
+};
+const ProtectAuth = ({ element }) => {
+  const { isAuthenticated } = useAuthContext();
+  return isAuthenticated ? element : <Navigate to="/login" />;
+};
 
 const AppRouter = createBrowserRouter([
   {
-    path: "/criar",
-    element: <CreateUsuario />,
+    path: "/login",
+    element: <PublicAuth element={<Login />} />,
   },
   {
-    path: "/Login",
-    element: <Login />,
+    path: "/criar",
+    element: <PublicAuth element={<CreateUsuario />} />,
   },
   {
     path: "/pagina-inicial",
     element: (
-      <PrivateRoute>
-        <MenuLaterealCliente>
-          <DashBordCliente />
-        </MenuLaterealCliente>
-      </PrivateRoute>
+      <ProtectAuth
+        element={
+          <MenuLaterealCliente>
+            <DashBordCliente />
+          </MenuLaterealCliente>
+        }
+      />
     ),
   },
   {
     path: "/barbeiros",
     element: (
-      <PrivateRoute>
-        <MenuLaterealCliente>
-          <ListagemBarbeiros />
-        </MenuLaterealCliente>
-      </PrivateRoute>
+      <ProtectAuth
+        element={
+          <MenuLaterealCliente>
+            <ListagemBarbeiros />
+          </MenuLaterealCliente>
+        }
+      />
     ),
   },
   {
@@ -41,4 +54,4 @@ const AppRouter = createBrowserRouter([
   },
 ]);
 
-export {AppRouter};
+export { AppRouter };

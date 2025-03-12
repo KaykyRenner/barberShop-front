@@ -13,12 +13,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import createCadastro from "../../shared/services/api/cadastroELoginUsuarios/cadastro";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuthContext } from "../../shared/contexts/authContext";
 
 const CreateUsuario = ({children}) => {
- 
-
+  const { isAuthenticated } = useAuthContext();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [role, setRole] = useState("");
@@ -44,7 +43,7 @@ const CreateUsuario = ({children}) => {
         setErroGeneric("Erro desconhecido ao cadastrar.");
       }
     };
-
+   
   return (
     <Box
       width="100vw"
@@ -108,15 +107,17 @@ const CreateUsuario = ({children}) => {
                 </Button>
               </Box>
             </CardActions>
-          </form>
-          <Typography align="center">
-            <Link href="/pagina-inicial" color="inherit">
-              já tem uma conta?
-            </Link>
-          </Typography>
+          </form>          
+            <Box paddingTop={2}>
+              <Typography align="center">
+                <Link to="/login">
+                já tem uma conta?
+                </Link>
+              </Typography>
+            </Box>
         </CardContent>
       </Card>
     </Box>
-  );
-};
+  );}
+
 export default CreateUsuario;
