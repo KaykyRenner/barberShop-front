@@ -9,16 +9,23 @@ import {
 } from "@mui/material";
 import { useAuthContext } from "../../contexts/authContext";
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
-const Login = ({ children }) => {
-  const { isAuthenticated, login } = useAuthContext();
-  
+const Login = () => {
+  const { login } = useAuthContext();
+  const navigete = useNavigate()
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const handleEnter = (e)=>{
-    if(e.key === "Enter")
+    if(e.key === "Enter"){
       login(email,senha)
+      .then(()=>{         
+            navigete("/pagina-inicial")
+            console.log("cai aqui")
+      }).catch((err)=>{
+        console.log(err,"erro")
+      })
+    }
   }
   return (
     <Box
@@ -55,7 +62,7 @@ const Login = ({ children }) => {
         </CardContent>
         <CardActions>
           <Box width="100%" display="flex" justifyContent="center">
-            <Button variant="contained" onClick={() => login(email, senha)} onKeyDown={handleEnter}>
+            <Button  variant="contained" onClick={() => login(email, senha).then(()=>{navigete("/pagina-inicial")}).catch(err=>{console.log(err,"erro no login")})} onKeyDown={handleEnter}>
               
               ENTRAR
             </Button>

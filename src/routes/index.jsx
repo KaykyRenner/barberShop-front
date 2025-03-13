@@ -5,14 +5,15 @@ import ListagemBarbeiros from "../pages/barbeiros/listagemDeBarbeiros";
 import CreateUsuario from "../pages/cadastroUsuarios/cadastro";
 import { useAuthContext } from "../shared/contexts/authContext";
 import Login from "../shared/components/login/login";
+import CreateCliente from "../pages/cliente/createCliente";
 
 const PublicAuth = ({ element }) => {
   const { isAuthenticated } = useAuthContext();
-  return isAuthenticated ? <Navigate to="/pagina-inicial" /> : element;
+  return !isAuthenticated ? element : null;
 };
 const ProtectAuth = ({ element }) => {
   const { isAuthenticated } = useAuthContext();
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  return isAuthenticated ? element : null ;
 };
 
 const AppRouter = createBrowserRouter([
@@ -23,6 +24,10 @@ const AppRouter = createBrowserRouter([
   {
     path: "/criar",
     element: <PublicAuth element={<CreateUsuario />} />,
+  },
+  {
+    path: "/criar-cliente",
+    element: <ProtectAuth element={<CreateCliente />} />,
   },
   {
     path: "/pagina-inicial",

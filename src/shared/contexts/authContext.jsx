@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState, useMemo } from "react";
-import auth from "../services/api/auth/authServices";
-import { Navigate } from "react-router-dom";
+import auth from "../services/api/auth-login/authServices";
 
 const AuthContext = createContext({
     isAuthenticated: false,

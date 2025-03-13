@@ -100,6 +100,7 @@ const MenuLaterealCliente = ({ children }) => {
               icon={"logout"}
               label="sair"
               onClick={logout}
+              to="/login"
               />
               <ListItemLink
                 icon={themeName === "light" ? "light_mode" : "dark_mode"}

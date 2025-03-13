@@ -12,12 +12,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import createCadastro from "../../shared/services/api/cadastroELoginUsuarios/cadastro";
-import { Link, Navigate } from "react-router-dom";
+import createCadastro from "../../shared/services/api/cadastroUsuarios/cadastro";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../shared/contexts/authContext";
 
-const CreateUsuario = ({children}) => {
-  const { isAuthenticated } = useAuthContext();
+
+const CreateUsuario = () => {
+  const {login } = useAuthContext();
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [role, setRole] = useState("");
@@ -25,25 +27,30 @@ const CreateUsuario = ({children}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    const created = await createCadastro(senha, email, role);
-    if (created.error === "Email ou Senha já cadastrado") {
-        setErrors({
-          email: "Email ou Senha já cadastrado", 
-          senha: "Email ou Senha já cadastrado",
-        });
-      } else if (created.error && created.error.body) {
-        const newError = {};
-        
-        if (created.error.body.email) newError.email = created.error.body.email;
-        if (created.error.body.senha) newError.senha = created.error.body.senha;
-        if (created.error.body.role) newError.role = created.error.body.role;
-  
-        setErrors(newError);
-      } else {
-        setErroGeneric("Erro desconhecido ao cadastrar.");
+    
+      const created = await createCadastro(senha, email, role);
+
+      if (created && created.error) {
+        if (created.error === "Email ou Senha já cadastrado") {
+          setErrors({
+            email: "Email ou Senha já cadastrado",
+            senha: "Email ou Senha já cadastrado",
+          });
+        } else if (created.error.body) {
+          const newError = {};
+          if (created.error.body.email) newError.email = created.error.body.email;
+          if (created.error.body.senha) newError.senha = created.error.body.senha;
+          if (created.error.body.role) newError.role = created.error.body.role;
+
+          setErrors(newError);
+        }
+      } else{
+        login(email, senha)
+        navigate("/criar-cliente")
       }
-    };
-   
+    
+  };
+
   return (
     <Box
       width="100vw"
@@ -107,17 +114,16 @@ const CreateUsuario = ({children}) => {
                 </Button>
               </Box>
             </CardActions>
-          </form>          
-            <Box paddingTop={2}>
-              <Typography align="center">
-                <Link to="/login">
-                já tem uma conta?
-                </Link>
-              </Typography>
-            </Box>
+          </form>
+          <Box paddingTop={2}>
+            <Typography align="center">
+              <Link to="/login">já tem uma conta?</Link>
+            </Typography>
+          </Box>
         </CardContent>
       </Card>
     </Box>
-  );}
+  );
+};
 
 export default CreateUsuario;
