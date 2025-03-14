@@ -20,7 +20,7 @@ const Login = () => {
     if(e.key === "Enter"){
       login(email,senha)
       .then(()=>{         
-            navigete("/pagina-inicial")
+            navigete("/pagina-inicial-cliente")
             console.log("cai aqui")
       }).catch((err)=>{
         console.log(err,"erro")

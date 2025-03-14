@@ -4,7 +4,8 @@ import api from "../axios-config/index";
 const selecionaBarbeiro = async (idBarbeiro)=>{
     try{
         const url = `/cliente/barbeiro/${idBarbeiro}`
-        const {datad} = api.put(url)
+        const {data} = await api.put(url)
+        return data.id
     }catch(err){
         return handleError(err,'ao selecionar barbeiro')
     }

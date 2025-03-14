@@ -6,6 +6,7 @@ import CreateUsuario from "../pages/cadastroUsuarios/cadastro";
 import { useAuthContext } from "../shared/contexts/authContext";
 import Login from "../shared/components/login/login";
 import CreateCliente from "../pages/cliente/createCliente";
+import ListagemDeHorarios from "../pages/horariosBarbeiro/listagemHorarios";
 
 const PublicAuth = ({ element }) => {
   const { isAuthenticated } = useAuthContext();
@@ -30,7 +31,16 @@ const AppRouter = createBrowserRouter([
     element: <ProtectAuth element={<CreateCliente />} />,
   },
   {
-    path: "/pagina-inicial",
+    path:"/horarios",
+    element:<ProtectAuth element={
+      <MenuLaterealCliente>
+        <ListagemDeHorarios/>
+      </MenuLaterealCliente>
+    }
+    />
+  },
+  {
+    path: "/pagina-inicial-cliente",
     element: (
       <ProtectAuth
         element={
@@ -55,7 +65,7 @@ const AppRouter = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Navigate to="/pagina-inicial" />,
+    element: <Navigate to="/pagina-inicial-cliente" />,
   },
 ]);
 

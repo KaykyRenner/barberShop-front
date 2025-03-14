@@ -10,7 +10,7 @@ import {
   Icon,
   useMediaQuery,
 } from "@mui/material";
-import {ContentCut} from '@mui/icons-material';
+import {ContentCut, ScheduleSendTwoTone} from '@mui/icons-material';
 import { Box } from "@mui/system";
 import { useDrawer } from "../../contexts/drowerContext";
 import PropTypes from "prop-types";
@@ -82,14 +82,19 @@ const MenuLaterealCliente = ({ children }) => {
                 <ListItemLink
                   icon="home"
                   label="Página Inicial"
-                  to="/pagina-inicial"
+                  to="/pagina-inicial-cliente"
                   onClick={toggleDrawer}
                 />
                 <ListItemLink
                   icon= {<ContentCut/>}
-                  label="barbeiros"
+                  label="Barbeiros"
                   to="/barbeiros"
                   onClick={toggleDrawer}
+                />
+                <ListItemLink
+                icon={<ScheduleSendTwoTone/>}
+                label="Horários"
+                to="/horarios"
                 />
               </List>
               

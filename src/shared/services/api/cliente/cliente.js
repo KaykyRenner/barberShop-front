@@ -1,5 +1,5 @@
 import api from "../axios-config/index";
-const createCliente = async (nomeCliente,emailCliente,telefoneCliente)=>{
+const create = async (nomeCliente,emailCliente,telefoneCliente)=>{
     try{
         const {data} = api.post('/cliente',{
             nomeCliente,
@@ -20,4 +20,4 @@ const createCliente = async (nomeCliente,emailCliente,telefoneCliente)=>{
           return new Error(`erro ao criar Cliente. desconhecido do backEnd`);
     }
 }
-export default createCliente
+export default create

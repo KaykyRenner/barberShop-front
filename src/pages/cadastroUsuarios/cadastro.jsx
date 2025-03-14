@@ -16,10 +16,9 @@ import createCadastro from "../../shared/services/api/cadastroUsuarios/cadastro"
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../shared/contexts/authContext";
 
-
 const CreateUsuario = () => {
-  const {login } = useAuthContext();
-  const navigate = useNavigate()
+  const { login } = useAuthContext();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [role, setRole] = useState("");
@@ -27,28 +26,32 @@ const CreateUsuario = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    
-      const created = await createCadastro(senha, email, role);
 
-      if (created && created.error) {
-        if (created.error === "Email ou Senha já cadastrado") {
-          setErrors({
-            email: "Email ou Senha já cadastrado",
-            senha: "Email ou Senha já cadastrado",
-          });
-        } else if (created.error.body) {
-          const newError = {};
-          if (created.error.body.email) newError.email = created.error.body.email;
-          if (created.error.body.senha) newError.senha = created.error.body.senha;
-          if (created.error.body.role) newError.role = created.error.body.role;
+    const created = await createCadastro(senha, email, role);
 
-          setErrors(newError);
-        }
-      } else{
-        login(email, senha)
-        navigate("/criar-cliente")
+    if (created && created.error) {
+      if (created.error === "Email ou Senha já cadastrado") {
+        setErrors({
+          email: "Email ou Senha já cadastrado",
+          senha: "Email ou Senha já cadastrado",
+        });
+      } else if (created.error.body) {
+        const newError = {};
+        if (created.error.body.email) newError.email = created.error.body.email;
+        if (created.error.body.senha) newError.senha = created.error.body.senha;
+        if (created.error.body.role) newError.role = created.error.body.role;
+
+        setErrors(newError);
       }
-    
+    } else {
+      login(email, senha).then(() => {
+        if (role == "cliente") {
+          navigate("/criar-cliente");
+        }else{
+          navigate("/criar-barbeiro")
+        }
+      });
+    }
   };
 
   return (

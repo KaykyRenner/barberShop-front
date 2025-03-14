@@ -4,11 +4,11 @@ import erroInterceptors from "./interceptors/erroInterceptors";
 import enviroment from "../../../environment";
 
 // Criação da instância do axios
+const token = localStorage.getItem("APP_ACESS_TOKEN");
 const api = axios.create({
     baseURL: enviroment.URL_BASE,
-    headers:{
-        authorization:`Bearer ${JSON.parse(localStorage.getItem('APP_ACESS_TOKEN')|| null)}`
-    }
+    headers: token ? { authorization: `Bearer ${JSON.parse(token)}` } : {},
+    
 });
 
 // Configuração dos interceptadores de resposta

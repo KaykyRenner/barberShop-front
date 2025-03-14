@@ -29,10 +29,10 @@ const ListagemBarbeiros = () => {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const handleSelectId= (id)=>{
-    console.log(id)
-    selecionaBarbeiro(id)
-  }
+  const handleSelectId = (id) => {
+    console.log(id);
+    selecionaBarbeiro(id);
+  };
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
   }, [searchParams]);
@@ -41,14 +41,15 @@ const ListagemBarbeiros = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    debounce(() => {
+    debounce(async () => {
       setLoading(true);
-      barbeiroServices.getAll(pagina, busca)
+      await barbeiroServices
+        .getAll(pagina, busca)
         .then((result) => {
           setLoading(false);
           if (result instanceof Error) {
-            setRows([])
-            setCount(0)            
+            setRows([]);
+            setCount(0);
             //alert(result.message);
           } else {
             setRows(result.data.data);
@@ -67,7 +68,7 @@ const ListagemBarbeiros = () => {
         mostrarInputBusca
         textoDeBusca={busca}
         aoMudarTextoDeBusca={(texto) => {
-          setSearchParams({ busca: texto, pagina:1 }, { replace: true });
+          setSearchParams({ busca: texto, pagina: 1 }, { replace: true });
         }}
       />
       <TableContainer
@@ -91,28 +92,38 @@ const ListagemBarbeiros = () => {
                   <TableCell>ações</TableCell>
                   <TableCell>{row.nomeBarbeiro}</TableCell>
                   <TableCell>
-                    <Button onClick={()=>handleSelectId(row.id)} variant="contained">selecionar</Button>
+                    <Button
+                      onClick={() => handleSelectId(row.id)}
+                      variant="contained"
+                    >
+                      Selecionar
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={3}>Nenhum dado disponível</TableCell>
+                <TableCell colSpan={3}>nenhum horario encontrado</TableCell>
               </TableRow>
             )}
           </TableBody>
           <TableFooter>
-            {(count>0 && count > enviroment.LIMITE_DE_LINHAS)&&(
+            {count > 0 && count > enviroment.LIMITE_DE_LINHAS && (
               <TableRow>
                 <TableCell colSpan={3}>
-                <Pagination
-                onChange={(e, newPage) => setSearchParams({busca, pagina:newPage.toString()},{replace:true})}
-                 page={pagina} 
-                count={Math.ceil(count/enviroment.LIMITE_DE_LINHAS)}/>
+                  <Pagination
+                    onChange={(e, newPage) =>
+                      setSearchParams(
+                        { busca, pagina: newPage.toString() },
+                        { replace: true }
+                      )
+                    }
+                    page={pagina}
+                    count={Math.ceil(count / enviroment.LIMITE_DE_LINHAS)}
+                  />
                 </TableCell>
               </TableRow>
-            ) 
-            }
+            )}
           </TableFooter>
         </Table>
       </TableContainer>
