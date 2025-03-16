@@ -12,7 +12,9 @@ import create from "../../shared/services/api/cliente/cliente";
 import { NavigateNext } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../shared/contexts/authContext";
 const CreateCliente = () => {
+  const {logout} = useAuthContext()
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -62,8 +64,17 @@ const CreateCliente = () => {
             display="flex"
             justifyContent="center"
             onClick={async () => {
-              await create(nome, email, telefone).then(()=>{
-                navigate("/pagina-inicial-cliente")
+              await create(nome, email, telefone).then((result)=>{
+                if(result instanceof Error){
+                  console.log(result)
+                  return
+                }else{
+                  logout()
+                  navigate("/login")
+                }
+                               
+              }).catch(error=>{
+                console.log(error,"error ao criar cliente")
               })
             }}
           >

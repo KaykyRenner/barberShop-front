@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -30,9 +31,21 @@ const ListagemDeHorarios = () => {
   useEffect(() => {
     debounce(async()=>{
         setLoading(true)
-        await getAllHorarios(1).then
+        await getAllHorarios(3).then((result)=>{
+          setLoading(false)
+          if(result instanceof Error){
+            console.log(result)
+            setRows([])
+          }else{
+            console.log(result)
+            setRows(result.horarios)
+          }
+        }).catch((err)=>{
+          setLoading(false)
+          console.log(err, "erro ao consultar horarios")
+        })
     })
-  })
+  },[page,busca])
 
   return (
     <LayoutBaseDePagina titulo="horarios">
@@ -52,7 +65,7 @@ const ListagemDeHorarios = () => {
             {rows.length > 0 ? (
               rows.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell>Ações</TableCell>
+                  <TableCell align="center">{row.status}</TableCell>
                   <TableCell>{row.horario}</TableCell>
                   <TableCell>
                     <Button variant="contained">Selecionar</Button>

@@ -7,7 +7,7 @@ import enviroment from "../../../environment";
 const token = localStorage.getItem("APP_ACESS_TOKEN");
 const api = axios.create({
     baseURL: enviroment.URL_BASE,
-    headers: token ? { authorization: `Bearer ${JSON.parse(token)}` } : {},
+    headers:{authorization: `Bearer ${JSON.parse(token)}`|| null},
     
 });
 

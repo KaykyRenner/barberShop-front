@@ -22,6 +22,7 @@ const Login = () => {
       .then(()=>{         
             navigete("/pagina-inicial-cliente")
             console.log("cai aqui")
+            window.location.reload()
       }).catch((err)=>{
         console.log(err,"erro")
       })

@@ -47,8 +47,10 @@ const CreateUsuario = () => {
       login(email, senha).then(() => {
         if (role == "cliente") {
           navigate("/criar-cliente");
+          window.location.reload()
         }else{
           navigate("/criar-barbeiro")
+          window.location.reload()
         }
       });
     }
