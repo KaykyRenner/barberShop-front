@@ -37,7 +37,7 @@ const ListagemBarbeiros = () => {
     return searchParams.get("busca") || "";
   }, [searchParams]);
   const pagina = useMemo(() => {
-    return Number(searchParams.get("pagina")) || "1";
+    return Number(searchParams.get("pagina")) || 1;
   }, [searchParams]);
 
   useEffect(() => {
@@ -112,11 +112,11 @@ const ListagemBarbeiros = () => {
               <TableRow>
                 <TableCell colSpan={3}>
                   <Pagination
-                    onChange={(e, newPage) =>
+                    onChange={(e, newPage) =>{
                       setSearchParams(
                         { busca, pagina: newPage.toString() },
                         { replace: true }
-                      )
+                      )}
                     }
                     page={pagina}
                     count={Math.ceil(count / enviroment.LIMITE_DE_LINHAS)}

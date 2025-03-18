@@ -9,25 +9,35 @@ import {
 } from "@mui/material";
 import { useAuthContext } from "../../contexts/authContext";
 import { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { login } = useAuthContext();
-  const navigete = useNavigate()
+  const navigete = useNavigate();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const handleEnter = (e)=>{
-    if(e.key === "Enter"){
-      login(email,senha)
-      .then(()=>{         
-            navigete("/pagina-inicial-cliente")
-            console.log("cai aqui")
-            window.location.reload()
-      }).catch((err)=>{
-        console.log(err,"erro")
+
+  const handleLogin = () => {
+    login(email, senha)
+      .then((result) => {
+        if (result instanceof Error) {
+          navigete("/login");
+        } else {
+          navigete("/pagina-inicial-cliente");
+
+          window.location.reload();
+        }
       })
+      .catch((err) => {
+        console.log(err, "erro");
+      });
+  };
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
     }
-  }
+  };
+
   return (
     <Box
       width="100vw"
@@ -63,26 +73,23 @@ const Login = () => {
         </CardContent>
         <CardActions>
           <Box width="100%" display="flex" justifyContent="center">
-            <Button  variant="contained" onClick={() => login(email, senha).then(()=>{navigete("/pagina-inicial")}).catch(err=>{console.log(err,"erro no login")})} onKeyDown={handleEnter}>
-              
+            <Button
+              variant="contained"
+              onClick={handleLogin}
+              onKeyDown={handleEnter}
+            >
               ENTRAR
             </Button>
           </Box>
-          
-          
         </CardActions>
         <CardContent>
           <Typography align="center">
-              <Link to="/criar">
-              Criar Conta
-              </Link>
-            </Typography>
+            <Link to="/criar">Criar Conta</Link>
+          </Typography>
         </CardContent>
       </Card>
-      
     </Box>
   );
-}
-
+};
 
 export default Login;
