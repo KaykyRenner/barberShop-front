@@ -12,17 +12,21 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
-import LayoutBaseDePagina from "../../shared/layouts/layoutBaseDePagina";
 import useDebounce from "../../shared/hooks/useDeBounce";
 import { useEffect, useMemo, useState } from "react";
-import { replace, useSearchParams } from "react-router-dom";
-import getAllHorarios from "../../shared/services/api/horariosBarbeiro/listagemHorario";
-import selecionaBarbeiro from "../../shared/services/api/agendarHorario/selecionaBarbeiro";
-import FerramentasDeListagem from "../../shared/components/barraDeferramentas/FerramentasDeListagem";
+import { useSearchParams } from "react-router-dom";
+
 import enviroment from "../../shared/environment";
+import LayoutBaseDePagina from "../../shared/layouts/layoutBaseDePagina";
+import FerramentasDeListagem from "../../shared/components/barraDeferramentas/FerramentasDeListagem";
+import getIdFromToken from "../../shared/services/api/auth-login/manipulacaoDeId";
+import { getByIdCliente } from "../../shared/services/api/cliente/cliente";
+import { barbeiroServices } from "../../shared/services/api/barbeiro/barbeiro";
+import getAllHorarios from "../../shared/services/api/horariosBarbeiro/listagemHorario";
 const ListagemDeHorarios = () => {
+  const [nomeBarbeiro, setNomeBarbeiro] = useState("");
+  const [clienteID, setIdCliente] = useState("");
   const [status, setStatus] = useState("");
   const { debounce } = useDebounce();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,31 +40,55 @@ const ListagemDeHorarios = () => {
     return Number(searchParams.get("pagina")) || 1;
   });
   useEffect(() => {
+    const fetchCliente = async () => {
+      try {
+        const idUsuario = getIdFromToken();
+        if (!idUsuario) return;
+
+        const result = await getByIdCliente(idUsuario);
+        if (!result) {
+          console.error("Erro ao buscar cliente:", result);
+          setIdCliente("");
+          return;
+        }
+
+        const id = result.usuario.barbeiro_Id;
+        setIdCliente(id);
+        const barbeiroData = await barbeiroServices.getById(id);
+        setNomeBarbeiro(barbeiroData.barbeiro.nomeBarbeiro);
+        console.log(barbeiroData.barbeiro.nomeBarbeiro)
+      } catch (err) {
+        console.error("Erro ao buscar dados:", err);
+      }
+    };
+    fetchCliente();
+  }, []);
+  useEffect(() => {
     debounce(async () => {
+      if (!clienteID) return;
+
       setLoading(true);
-      await getAllHorarios(3,pagina, busca)
+      try {
+        const result = await getAllHorarios(clienteID, pagina, busca);
+        setLoading(false);
 
-        .then((result) => {
-          setLoading(false);
-          if (result instanceof Error) {
-            console.log(result);
-            setRows([]);
-            setCount(0);
-          } else {
-            console.log(result);
-            setRows(result.data.horarios);
-            setCount(result.totalCount);
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.log(err, "erro ao consultar horarios");
-        });
+        if (!result || result.error) {
+          console.error("Erro ao buscar horários:", result);
+          setRows([]);
+          setCount(0);
+        } else {
+          setRows(result.data.horarios || []);
+          setCount(result.totalCount || 0);
+        }
+      } catch (err) {
+        setLoading(false);
+        console.error("Erro ao consultar horários:", err);
+      }
     });
-  }, [pagina, busca]);
-
+  }, [pagina, busca, clienteID]);
+  
   return (
-    <LayoutBaseDePagina titulo="horarios">
+    <LayoutBaseDePagina titulo={`${nomeBarbeiro}`}>
       <FerramentasDeListagem
         MostrarStatus
         valorDeStatus={status}
@@ -78,7 +106,7 @@ const ListagemDeHorarios = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">horarios</TableCell>
+              <TableCell align="center">horarios  {nomeBarbeiro}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -101,7 +129,7 @@ const ListagemDeHorarios = () => {
             ) : (
               <TableRow>
                 <TableCell colSpan={3} align="center">
-                  Nenhum barbeiro encontrado
+                  Nenhum horario encontrado
                 </TableCell>
               </TableRow>
             )}
@@ -117,7 +145,7 @@ const ListagemDeHorarios = () => {
                     );
                   }}
                   page={pagina}
-                  count={Math.ceil(count/enviroment.LIMITE_DE_LINHAS)}
+                  count={Math.ceil(count / enviroment.LIMITE_DE_LINHAS)}
                 />
               </TableRow>
             )}

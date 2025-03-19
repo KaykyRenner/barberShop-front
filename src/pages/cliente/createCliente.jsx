@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import create from "../../shared/services/api/cliente/cliente";
+import {create} from "../../shared/services/api/cliente/cliente";
 import { NavigateNext } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

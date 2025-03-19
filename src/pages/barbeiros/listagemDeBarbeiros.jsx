@@ -32,6 +32,7 @@ const ListagemBarbeiros = () => {
   const handleSelectId = (id) => {
     console.log(id);
     selecionaBarbeiro(id);
+    
   };
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";

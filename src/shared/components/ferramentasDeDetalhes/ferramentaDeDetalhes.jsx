@@ -13,10 +13,10 @@ import PropTypes from "prop-types";
 
 const FerramentasDeDetalhes = ({
   textoBotaoDeNovo = "NOVO",
-  mostrarBotaoNovo = true,
-  mostrarBotaoVoltar = true,
-  mostrarBotaoApagar = true,
-  mostrarBotaoSalvar = true,
+  mostrarBotaoNovo = false,
+  mostrarBotaoVoltar = false,
+  mostrarBotaoApagar = false,
+  mostrarBotaoSalvar = false,
   mostrarBotaoSalvarEFechar = false,
 
   mostrarBotaoNovoCarregando = false,
