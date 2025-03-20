@@ -13,7 +13,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import FerramentasDeListagem from "../../shared/components/barraDeferramentas/FerramentasDeListagem";
 import { barbeiroServices } from "../../shared/services/api/barbeiro/barbeiro";
@@ -23,16 +23,29 @@ import enviroment from "../../shared/environment";
 import selecionaBarbeiro from "../../shared/services/api/agendarHorario/selecionaBarbeiro";
 
 const ListagemBarbeiros = () => {
+  const navigate = useNavigate()
   const { debounce } = useDebounce();
   const [searchParams, setSearchParams] = useSearchParams();
   const [rows, setRows] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const handleSelectId = (id) => {
+  const handleSelectId = async (id) => {
     console.log(id);
-    selecionaBarbeiro(id);
-    
+    try {
+      const result = await selecionaBarbeiro(id);
+      if(!result){
+        alert("nao foi possível selecionar um barbeiro")
+        navigate("/pagina-inicial-login")
+      }else{
+        alert("barbeiro selecionado")
+        navigate("/horarios")
+      }
+    } catch (err) {
+      console.log("nao foi possível selcionar o barbeiro", err)
+      alert("erro ao selecionar barbeiro")
+      navigate("/pagina-inicial-login")
+    }
   };
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -113,12 +126,12 @@ const ListagemBarbeiros = () => {
               <TableRow>
                 <TableCell colSpan={3}>
                   <Pagination
-                    onChange={(e, newPage) =>{
+                    onChange={(e, newPage) => {
                       setSearchParams(
                         { busca, pagina: newPage.toString() },
                         { replace: true }
-                      )}
-                    }
+                      );
+                    }}
                     page={pagina}
                     count={Math.ceil(count / enviroment.LIMITE_DE_LINHAS)}
                   />

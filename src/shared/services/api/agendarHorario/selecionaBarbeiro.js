@@ -1,6 +1,5 @@
 import handleError from "../../../components/handleError/handleErro";
 import api from "../axios-config/index";
-import getAllHorarios from "../horariosBarbeiro/listagemHorario";
 
 const selecionaBarbeiro = async (idBarbeiro)=>{
     try{

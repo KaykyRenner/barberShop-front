@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import useDebounce from "../../shared/hooks/useDeBounce";
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import enviroment from "../../shared/environment";
 import LayoutBaseDePagina from "../../shared/layouts/layoutBaseDePagina";
@@ -23,8 +23,11 @@ import FerramentasDeListagem from "../../shared/components/barraDeferramentas/Fe
 import getIdFromToken from "../../shared/services/api/auth-login/manipulacaoDeId";
 import { getByIdCliente } from "../../shared/services/api/cliente/cliente";
 import { barbeiroServices } from "../../shared/services/api/barbeiro/barbeiro";
+import { agendarHorario } from "../../shared/services/api/agendarHorario/agendarHorario";
 import getAllHorarios from "../../shared/services/api/horariosBarbeiro/listagemHorario";
+
 const ListagemDeHorarios = () => {
+  const navigate = useNavigate()
   const [nomeBarbeiro, setNomeBarbeiro] = useState("");
   const [clienteID, setIdCliente] = useState("");
   const [status, setStatus] = useState("");
@@ -39,6 +42,22 @@ const ListagemDeHorarios = () => {
   const pagina = useMemo(() => {
     return Number(searchParams.get("pagina")) || 1;
   });
+  const handleSelectId = async (reservar, id) => {
+    try {
+      const result = await agendarHorario(reservar, id);
+      if(result.message === "voce só pode reservar um horario por vez"){
+        alert("voce só pode reservar um horario por vez")
+        navigate("/pagina-inicial-cliente")
+      }else{
+        alert("horario agendando com sucesso")
+        navigate("/pagina-inicial-cliente")
+      }
+    } catch (err) {
+      console.error("Erro ao agendar horario:", err);
+      alert("Erro ao agendar horario")
+      navigate("/pagina-inicial-cliente")
+    }
+  };
   useEffect(() => {
     const fetchCliente = async () => {
       try {
@@ -56,7 +75,7 @@ const ListagemDeHorarios = () => {
         setIdCliente(id);
         const barbeiroData = await barbeiroServices.getById(id);
         setNomeBarbeiro(barbeiroData.barbeiro.nomeBarbeiro);
-        console.log(barbeiroData.barbeiro.nomeBarbeiro)
+        console.log(barbeiroData.barbeiro.nomeBarbeiro);
       } catch (err) {
         console.error("Erro ao buscar dados:", err);
       }
@@ -86,7 +105,7 @@ const ListagemDeHorarios = () => {
       }
     });
   }, [pagina, busca, clienteID]);
-  
+
   return (
     <LayoutBaseDePagina titulo={`${nomeBarbeiro}`}>
       <FerramentasDeListagem
@@ -117,7 +136,12 @@ const ListagemDeHorarios = () => {
                   <TableCell>{row.horario}</TableCell>
                   <TableCell>
                     {row.status == "disponível" ? (
-                      <Button variant="contained" color="success">
+                      <Button variant="contained" value="reservado" color="success"
+                      onClick={(e)=>{
+                        const valor = e.currentTarget.value
+                        handleSelectId(valor,row.id)
+                      }}
+                      >
                         reservar
                       </Button>
                     ) : (
