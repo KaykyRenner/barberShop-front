@@ -10,13 +10,18 @@ import {
   Icon,
   useMediaQuery,
 } from "@mui/material";
-import {ContentCut, ScheduleSendTwoTone} from '@mui/icons-material';
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
+import { ContentCut, ScheduleSendTwoTone } from "@mui/icons-material";
 import { Box } from "@mui/system";
-import { useDrawer } from "../../contexts/drowerContext";
+import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"; // Aqui permanece, pois o useNavigate é necessário para navegação.
+//
+import { getByIdCliente } from "../../services/api/cliente/cliente";
 import { useTheme as mudarTema } from "../../contexts/themeContext";
+import { useDrawer } from "../../contexts/drowerContext";
 import { useAuthContext } from "../../contexts/authContext";
+import getIdFromToken from "../../services/api/auth-login/manipulacaoDeId";
+
 const ListItemLink = ({ to, icon, label, onClick }) => {
   const navigate = useNavigate();
   const resolvedPath = useResolvedPath(to);
@@ -30,7 +35,7 @@ const ListItemLink = ({ to, icon, label, onClick }) => {
       <ListItemIcon>
         <Icon>{icon}</Icon>
       </ListItemIcon>
-      <ListItemText primary={label}/>
+      <ListItemText primary={label} />
     </ListItemButton>
   );
 };
@@ -43,11 +48,34 @@ ListItemLink.propTypes = {
 };
 
 const MenuLaterealCliente = ({ children }) => {
-  const {logout} = useAuthContext()
+  const [verifynulll, setVerifynulll] = useState(null);
+  const { logout } = useAuthContext();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm")); // Responsividade para ajustar o layout em telas pequenas
   const { isDrawerClosed, toggleDrawer } = useDrawer(); // Contexto do Drawer para controlar seu estado de abertura/fechamento
   const { themeName, toggleTheme } = mudarTema();
+  useEffect(() => {
+    const fetchCliente = async () => {
+      try {
+        const idUsuario = getIdFromToken();
+        if (!idUsuario) return;
+        const result = await getByIdCliente(idUsuario);
+        if (!result) {
+          console.error("Erro ao buscar cliente:", result);
+          return;
+        } else {
+          const verifyResult = result.usuario.barbeiro_Id;
+          if (verifyResult !== null) {
+            setVerifynulll(verifyResult);
+          }
+        }
+      } catch (err) {
+        console.error("Erro ao buscar cliente:", err);
+      }
+    };
+    fetchCliente()
+  }, []);
+
   return (
     <>
       <Drawer
@@ -86,26 +114,26 @@ const MenuLaterealCliente = ({ children }) => {
                   onClick={toggleDrawer}
                 />
                 <ListItemLink
-                  icon= {<ContentCut/>}
+                  icon={<ContentCut />}
                   label="Barbeiros"
                   to="/barbeiros"
                   onClick={toggleDrawer}
                 />
-                <ListItemLink
-                icon={<ScheduleSendTwoTone/>}
-                label="Horários"
-                to="/horarios"
-                />
+                {verifynulll !== null && (
+                  <ListItemLink
+                    icon={<ScheduleSendTwoTone />}
+                    label="Horários"
+                    to="/horarios"
+                  />
+                )}
               </List>
-              
-              
             </Box>
             <List component="nav">
               <ListItemLink
-              icon={"logout"}
-              label="sair"
-              onClick={logout}
-              to="/login"
+                icon={"logout"}
+                label="sair"
+                onClick={logout}
+                to="/login"
               />
               <ListItemLink
                 icon={themeName === "light" ? "light_mode" : "dark_mode"}

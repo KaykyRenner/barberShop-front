@@ -23,7 +23,7 @@ import enviroment from "../../shared/environment";
 import selecionaBarbeiro from "../../shared/services/api/agendarHorario/selecionaBarbeiro";
 
 const ListagemBarbeiros = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { debounce } = useDebounce();
   const [searchParams, setSearchParams] = useSearchParams();
   const [rows, setRows] = useState([]);
@@ -34,17 +34,18 @@ const ListagemBarbeiros = () => {
     console.log(id);
     try {
       const result = await selecionaBarbeiro(id);
-      if(!result){
-        alert("nao foi possível selecionar um barbeiro")
-        navigate("/pagina-inicial-login")
-      }else{
-        alert("barbeiro selecionado")
-        navigate("/horarios")
+      if (!result) {
+        alert("nao foi possível selecionar um barbeiro");
+        navigate("/pagina-inicial-login");
+      } else {
+        alert("barbeiro selecionado");
+        navigate("/horarios");
+        window.location.reload();
       }
     } catch (err) {
-      console.log("nao foi possível selcionar o barbeiro", err)
-      alert("erro ao selecionar barbeiro")
-      navigate("/pagina-inicial-login")
+      console.log("nao foi possível selcionar o barbeiro", err);
+      alert("erro ao selecionar barbeiro");
+      navigate("/pagina-inicial-login");
     }
   };
   const busca = useMemo(() => {

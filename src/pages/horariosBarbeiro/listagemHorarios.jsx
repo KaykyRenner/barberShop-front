@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   LinearProgress,
   Pagination,
@@ -61,6 +60,7 @@ const ListagemDeHorarios = () => {
   useEffect(() => {
     const fetchCliente = async () => {
       try {
+        
         const idUsuario = getIdFromToken();
         if (!idUsuario) return;
 
